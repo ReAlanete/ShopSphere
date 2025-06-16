@@ -3,10 +3,14 @@ package org.skypro.skyshop.product;
 import java.util.Objects;
 
 public class SimpleProduct extends Product {
-    int price;
+    private int price;
 
     public SimpleProduct(String name, int price) {
         super(name);
+        this.price = price;
+    }
+
+    public void setPrice(int price) {
         this.price = price;
     }
 

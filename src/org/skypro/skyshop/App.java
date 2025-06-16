@@ -35,6 +35,8 @@ public class App {
         basket.addProduct(beer);
         basket.addProduct(milk);
         basket.printBasket();
+        eggs.setPrice(100);
+        System.out.println(eggs.getPrice());
     }
 
 }
