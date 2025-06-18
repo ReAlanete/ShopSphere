@@ -2,41 +2,39 @@ package org.skypro.skyshop.product;
 
 import java.util.Objects;
 
-public class Product {
+public abstract class Product {
     private final String name;
-    private final int cost;
 
-    public Product(String name, int cost) {
+
+    public Product(String name) {
         this.name = name;
-        this.cost = cost;
+
     }
 
     public String getName() {
         return name;
     }
 
-    public int getCost() {
-        return cost;
-    }
+    public abstract double getPrice();
+
+    public abstract boolean isSpecial();
 
     @Override
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;
         Product product = (Product) o;
-        return cost == product.cost && Objects.equals(name, product.name);
+        return Objects.equals(name, product.name);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(name, cost);
+        return Objects.hash(name);
     }
 
     @Override
     public String toString() {
         return "Product{" +
-                "name='" + name + '\'' +
-                ", cost=" + cost +
-                '}';
+                "name='" + name;
     }
 
 }
