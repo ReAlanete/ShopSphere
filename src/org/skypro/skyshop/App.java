@@ -1,9 +1,13 @@
 package org.skypro.skyshop;
 
+import org.skypro.skyshop.article.Article;
 import org.skypro.skyshop.basket.ProductBasket;
 import org.skypro.skyshop.product.DiscountedProduct;
 import org.skypro.skyshop.product.FixPriceProduct;
 import org.skypro.skyshop.product.SimpleProduct;
+import org.skypro.skyshop.search.SearchEngine;
+
+import java.util.Arrays;
 
 public class App {
 
@@ -37,6 +41,52 @@ public class App {
         basket.printBasket();
         eggs.setPrice(100);
         System.out.println(eggs.getPrice());
+        Article article1 = new Article(
+                "Java vs PHP: Производительность",
+                "Java обычно превосходит PHP по скорости выполнения благодаря" +
+                        " своей компиляции в байт-код и виртуальной машине."
+        );
+
+        Article article2 = new Article(
+                "Java vs PHP: Простота изучения",
+                "PHP считается проще для начинающих благодаря своей " +
+                        "синтаксической простоте, тогда как Java требует больше времени для освоения."
+        );
+
+        Article article3 = new Article(
+                "Java vs PHP: Использование в веб-разработке",
+                "PHP широко используется для серверной части веб-приложений," +
+                        " а Java — для крупных корпоративных систем и приложений с высокой нагрузкой."
+        );
+
+        Article article4 = new Article(
+                "Java vs PHP: Безопасность",
+                "Java предлагает встроенные механизмы безопасности," +
+                        " что делает её предпочтительным выбором для приложений, требующих высокого уровня защиты." +
+                        " PHP также имеет средства безопасности, но требует более тщательной настройки."
+        );
+
+        Article article5 = new Article(
+                "Java vs PHP: Сообщество и поддержка",
+                "Оба языка имеют большое сообщество разработчиков. " +
+                        "Java широко используется в корпоративных решениях, а PHP — в веб-разработке с множеством" +
+                        " фреймворков и CMS."
+        );
+        SearchEngine search1 = new SearchEngine(10);
+        search1.add(bal);
+        search1.add(article5);
+        search1.add(article4);
+        search1.add(article3);
+        search1.add(article2);
+        search1.add(article1);
+        search1.add(beer);
+        search1.add(milk);
+        System.out.println(Arrays.toString(search1.search("PHP")));
+        System.out.println(Arrays.toString(search1.search("milk")));
+        SearchEngine.printResults(search1.search("PHP"));
+        SearchEngine.printResults(search1.search("milk"));
+        SearchEngine.printResults(search1.search("wrhwrh"));
+
     }
 
 }
