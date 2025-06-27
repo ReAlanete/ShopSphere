@@ -114,7 +114,8 @@ public class App {
             System.out.println(search1.bestFoundMatch("php"));
         } catch (BestResultNotFound e) {
             System.out.println(e.getMessage());
-        }  try {
+        }
+        try {
             System.out.println(search1.bestFoundMatch("rgwbww"));
         } catch (BestResultNotFound e) {
             System.out.println(e.getMessage());
