@@ -9,6 +9,12 @@ public class DiscountedProduct extends Product {
 
     public DiscountedProduct(String name, int price, int percent) {
         super(name);
+        if (price <= 0) {
+            throw new IllegalArgumentException("Price can't be zero or negative");
+        }
+        if (percent < 0 || percent > 100) {
+            throw new IllegalArgumentException("Percent must be 0 -100");
+        }
         this.basePrice = price;
         this.percent = percent;
 
@@ -42,7 +48,6 @@ public class DiscountedProduct extends Product {
     public String toString() {
         return getName() + ": " + getPrice() + " (" + percent + "%)";
     }
-
 
 
 }
