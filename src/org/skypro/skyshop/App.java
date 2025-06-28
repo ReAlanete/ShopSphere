@@ -119,6 +119,10 @@ public class App {
                 System.out.println(search1.bestFoundMatch("rgwbww"));
             } catch (BestResultNotFound e) {
                 System.out.println(e.getMessage());
+            }   try {
+                System.out.println(search1.bestFoundMatch("milk"));
+            } catch (BestResultNotFound e) {
+                System.out.println(e.getMessage());
             }
         }
 

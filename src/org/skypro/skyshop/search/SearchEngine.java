@@ -60,12 +60,12 @@ public class SearchEngine {
             if (searchable != null) {
                 int currentCount = 0;
                 String term = searchable.searchTerm().toLowerCase();
-                int index = term.indexOf(search);
+                int index = term.toLowerCase().indexOf(search);
 
                 while (index != -1) {
 
                     currentCount++;
-                    index = term.toLowerCase().indexOf(search, index + search.length());
+                    index = term.indexOf(search, index + search.length());
                 }
 
 
