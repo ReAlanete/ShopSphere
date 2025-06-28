@@ -5,6 +5,7 @@ import org.skypro.skyshop.basket.ProductBasket;
 import org.skypro.skyshop.product.DiscountedProduct;
 import org.skypro.skyshop.product.FixPriceProduct;
 import org.skypro.skyshop.product.SimpleProduct;
+import org.skypro.skyshop.search.BestResultNotFound;
 import org.skypro.skyshop.search.SearchEngine;
 
 import java.util.Arrays;
@@ -25,12 +26,9 @@ public class App {
         basket.addProduct(rice);
         basket.addProduct(chocolate);  // Добавление продукта в корзину.
         basket.addProduct(shampoo); // Добавление в заполненную корзину, в которой нет места.
-        basket.printBasket(); // Печать содержимого корзины с несколькими товарами.
         System.out.println(basket.totalCostBasket()); // Получение стоимости корзины с несколькими товарами.
         System.out.println(basket.chekProductInBasket("Milk")); //Поиск товара, который есть в корзине
         System.out.println(basket.chekProductInBasket("Anti-Dandruff Shampoo 250ml")); //Поиск товара, которого нет в корзине
-        basket.cleanBasket(); //Очистка корзины
-        basket.printBasket(); //Печать содержимого пустой корзины.
         System.out.println(basket.totalCostBasket());// Получение стоимости пустой корзины.
         System.out.println(basket.chekProductInBasket("Milk")); //Поиск товара по имени в пустой корзине.
         DiscountedProduct beer = new DiscountedProduct("Beer", 100, 20);
@@ -38,9 +36,8 @@ public class App {
         basket.addProduct(bal);
         basket.addProduct(beer);
         basket.addProduct(milk);
-        basket.printBasket();
-        eggs.setPrice(100);
-        System.out.println(eggs.getPrice());
+
+
         Article article1 = new Article(
                 "Java vs PHP: Производительность",
                 "Java обычно превосходит PHP по скорости выполнения благодаря" +
@@ -49,7 +46,7 @@ public class App {
 
         Article article2 = new Article(
                 "Java vs PHP: Простота изучения",
-                "PHP считается проще для начинающих благодаря своей " +
+                "е" +
                         "синтаксической простоте, тогда как Java требует больше времени для освоения."
         );
 
@@ -72,21 +69,63 @@ public class App {
                         "Java широко используется в корпоративных решениях, а PHP — в веб-разработке с множеством" +
                         " фреймворков и CMS."
         );
-        SearchEngine search1 = new SearchEngine(10);
-        search1.add(bal);
-        search1.add(article5);
-        search1.add(article4);
-        search1.add(article3);
-        search1.add(article2);
-        search1.add(article1);
-        search1.add(beer);
-        search1.add(milk);
-        System.out.println(Arrays.toString(search1.search("PHP")));
-        System.out.println(Arrays.toString(search1.search("milk")));
-        SearchEngine.printResults(search1.search("PHP"));
-        SearchEngine.printResults(search1.search("milk"));
-        SearchEngine.printResults(search1.search("wrhwrh"));
+        SearchEngine search1 = null;
+        try {
+            search1 = new SearchEngine(10);
+        } catch (IllegalArgumentException e) {
+            System.out.println(e.getMessage());
+        }
+        if (search1 != null) {
+            search1.add(bal);
+            search1.add(article5);
+            search1.add(article4);
+            search1.add(article3);
+            search1.add(article2);
+            search1.add(article1);
+            search1.add(beer);
+            search1.add(milk);
+
+            System.out.println(Arrays.toString(search1.search("PHP")));
+            System.out.println(Arrays.toString(search1.search("milk")));
+            SearchEngine.printResults(search1.search("PHP"));
+            SearchEngine.printResults(search1.search("milk"));
+            SearchEngine.printResults(search1.search("wrhwrh"));
+
+        }
+
+        try {
+            SimpleProduct apple = new SimpleProduct("apple", -1);
+        } catch (IllegalArgumentException e) {
+            System.out.println(e.getMessage());
+        }
+        try {
+            DiscountedProduct carrot = new DiscountedProduct("Carrot", 250, -1);
+
+        } catch (IllegalArgumentException e) {
+            System.out.println(e.getMessage());
+        }
+        try {
+            FixPriceProduct anotherProduct = new FixPriceProduct(" ");
+        } catch (IllegalArgumentException e) {
+            System.out.println(e.getMessage());
+        }
+        if (search1 != null) {
+            try {
+                System.out.println(search1.bestFoundMatch("php"));
+            } catch (BestResultNotFound e) {
+                System.out.println(e.getMessage());
+            }
+            try {
+                System.out.println(search1.bestFoundMatch("rgwbww"));
+            } catch (BestResultNotFound e) {
+                System.out.println(e.getMessage());
+            }   try {
+                System.out.println(search1.bestFoundMatch("milk"));
+            } catch (BestResultNotFound e) {
+                System.out.println(e.getMessage());
+            }
+        }
+
 
     }
-
 }

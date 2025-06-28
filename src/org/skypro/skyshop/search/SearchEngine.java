@@ -1,8 +1,11 @@
 package org.skypro.skyshop.search;
 
+
+import java.util.Arrays;
+
 public class SearchEngine {
 
-
+    private static final int MAX_RESULTS = 5;
     private final Searchable[] searchables;
     private int size;
 
@@ -16,9 +19,9 @@ public class SearchEngine {
     }
 
     public Searchable[] search(String query) {
-        Searchable[] results = new Searchable[5];
+        Searchable[] results = new Searchable[MAX_RESULTS];
         int count = 0;
-        for (int i = 0; i < size && count < 5; i++) {
+        for (int i = 0; i < size && count < results.length; i++) {
             Searchable item = searchables[i];
             if (item != null && item.searchTerm().toLowerCase().contains(query.toLowerCase())) {
                 results[count++] = item;
@@ -47,5 +50,45 @@ public class SearchEngine {
         if (!found) {
             System.out.println("Ничего не найдено");
         }
+    }
+
+    public Searchable bestFoundMatch(String search) throws BestResultNotFound {
+        int maxCount = 0;
+        Searchable bestMatch = null;
+        search = search.toLowerCase();
+        for (Searchable searchable : searchables) {
+            if (searchable != null) {
+                int currentCount = 0;
+                String term = searchable.searchTerm().toLowerCase();
+                int index = term.toLowerCase().indexOf(search);
+
+                while (index != -1) {
+
+                    currentCount++;
+                    index = term.indexOf(search, index + search.length());
+                }
+
+
+                if (currentCount > maxCount) {
+                    maxCount = currentCount;
+                    bestMatch = searchable;
+                }
+            }
+
+
+        }
+        if (bestMatch == null) {
+            throw new BestResultNotFound(search);
+        }
+        return bestMatch;
+
+    }
+
+    @Override
+    public String toString() {
+        return "SearchEngine{" +
+                "searchables=" + Arrays.toString(searchables) +
+                ", size=" + size +
+                '}';
     }
 }
