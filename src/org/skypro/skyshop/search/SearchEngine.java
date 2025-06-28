@@ -78,7 +78,7 @@ public class SearchEngine {
 
         }
         if (bestMatch == null) {
-            throw new BestResultNotFound("No matching result for: " + search);
+            throw new BestResultNotFound(search);
         }
         return bestMatch;
 

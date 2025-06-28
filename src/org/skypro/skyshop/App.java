@@ -109,16 +109,17 @@ public class App {
         } catch (IllegalArgumentException e) {
             System.out.println(e.getMessage());
         }
-
-        try {
-            System.out.println(search1.bestFoundMatch("php"));
-        } catch (BestResultNotFound e) {
-            System.out.println(e.getMessage());
-        }
-        try {
-            System.out.println(search1.bestFoundMatch("rgwbww"));
-        } catch (BestResultNotFound e) {
-            System.out.println(e.getMessage());
+        if (search1 != null) {
+            try {
+                System.out.println(search1.bestFoundMatch("php"));
+            } catch (BestResultNotFound e) {
+                System.out.println(e.getMessage());
+            }
+            try {
+                System.out.println(search1.bestFoundMatch("rgwbww"));
+            } catch (BestResultNotFound e) {
+                System.out.println(e.getMessage());
+            }
         }
 
 
