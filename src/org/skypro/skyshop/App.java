@@ -4,11 +4,12 @@ import org.skypro.skyshop.article.Article;
 import org.skypro.skyshop.basket.ProductBasket;
 import org.skypro.skyshop.product.DiscountedProduct;
 import org.skypro.skyshop.product.FixPriceProduct;
+import org.skypro.skyshop.product.Product;
 import org.skypro.skyshop.product.SimpleProduct;
 import org.skypro.skyshop.search.BestResultNotFound;
 import org.skypro.skyshop.search.SearchEngine;
 
-import java.util.Arrays;
+import java.util.List;
 
 public class App {
 
@@ -27,17 +28,16 @@ public class App {
         basket.addProduct(chocolate);  // Добавление продукта в корзину.
         basket.addProduct(shampoo); // Добавление в заполненную корзину, в которой нет места.
         System.out.println(basket.totalCostBasket()); // Получение стоимости корзины с несколькими товарами.
-        System.out.println(basket.chekProductInBasket("Milk")); //Поиск товара, который есть в корзине
-        System.out.println(basket.chekProductInBasket("Anti-Dandruff Shampoo 250ml")); //Поиск товара, которого нет в корзине
+        System.out.println(basket.checkProductInBasket("Milk")); //Поиск товара, который есть в корзине
+        basket.cleanBasket();
         System.out.println(basket.totalCostBasket());// Получение стоимости пустой корзины.
-        System.out.println(basket.chekProductInBasket("Milk")); //Поиск товара по имени в пустой корзине.
+        System.out.println(basket.checkProductInBasket("Milk")); //Поиск товара по имени в пустой корзине.
         DiscountedProduct beer = new DiscountedProduct("Beer", 100, 20);
-        FixPriceProduct bal = new FixPriceProduct("Bal");
-        basket.addProduct(bal);
+        FixPriceProduct ball = new FixPriceProduct("Ball");
+        basket.addProduct(ball);
         basket.addProduct(beer);
         basket.addProduct(milk);
-
-
+        basket.printBasket();
         Article article1 = new Article(
                 "Java vs PHP: Производительность",
                 "Java обычно превосходит PHP по скорости выполнения благодаря" +
@@ -46,8 +46,7 @@ public class App {
 
         Article article2 = new Article(
                 "Java vs PHP: Простота изучения",
-                "е" +
-                        "синтаксической простоте, тогда как Java требует больше времени для освоения."
+                "PHP проще для изучения благодаря синтаксической простоте, тогда как Java требует больше времени для освоения."
         );
 
         Article article3 = new Article(
@@ -69,29 +68,23 @@ public class App {
                         "Java широко используется в корпоративных решениях, а PHP — в веб-разработке с множеством" +
                         " фреймворков и CMS."
         );
-        SearchEngine search1 = null;
-        try {
-            search1 = new SearchEngine(10);
-        } catch (IllegalArgumentException e) {
-            System.out.println(e.getMessage());
-        }
-        if (search1 != null) {
-            search1.add(bal);
-            search1.add(article5);
-            search1.add(article4);
-            search1.add(article3);
-            search1.add(article2);
-            search1.add(article1);
-            search1.add(beer);
-            search1.add(milk);
 
-            System.out.println(Arrays.toString(search1.search("PHP")));
-            System.out.println(Arrays.toString(search1.search("milk")));
-            SearchEngine.printResults(search1.search("PHP"));
-            SearchEngine.printResults(search1.search("milk"));
-            SearchEngine.printResults(search1.search("wrhwrh"));
 
-        }
+        SearchEngine search1 = new SearchEngine();
+
+
+        search1.add(ball);
+        search1.add(article5);
+        search1.add(article4);
+        search1.add(article3);
+        search1.add(article2);
+        search1.add(article1);
+        search1.add(beer);
+        search1.add(beer);
+        search1.add(beer);
+        search1.add(beer);
+        search1.add(milk);
+
 
         try {
             SimpleProduct apple = new SimpleProduct("apple", -1);
@@ -109,23 +102,44 @@ public class App {
         } catch (IllegalArgumentException e) {
             System.out.println(e.getMessage());
         }
-        if (search1 != null) {
-            try {
-                System.out.println(search1.bestFoundMatch("php"));
-            } catch (BestResultNotFound e) {
-                System.out.println(e.getMessage());
-            }
-            try {
-                System.out.println(search1.bestFoundMatch("rgwbww"));
-            } catch (BestResultNotFound e) {
-                System.out.println(e.getMessage());
-            }   try {
-                System.out.println(search1.bestFoundMatch("milk"));
-            } catch (BestResultNotFound e) {
-                System.out.println(e.getMessage());
-            }
+        System.out.println("----------- Реализация метода bestFoundMatch --------------");
+        try {
+            System.out.println(search1.bestFoundMatch("php"));
+        } catch (BestResultNotFound e) {
+            System.out.println(e.getMessage());
+        }
+        try {
+            System.out.println(search1.bestFoundMatch("rgwbww"));
+        } catch (BestResultNotFound e) {
+            System.out.println(e.getMessage());
+        }
+        try {
+            System.out.println(search1.bestFoundMatch("milk"));
+        } catch (BestResultNotFound e) {
+            System.out.println(e.getMessage());
         }
 
+        basket.addProduct(beer);
+        basket.addProduct(beer);
+        basket.addProduct(beer);
+        basket.addProduct(beer);
+        basket.addProduct(beer);
+        System.out.println("----------------- Печать корзины до удаления ----------------");
+        basket.printBasket();
+        System.out.println("----------------- Реализация метода search ----------------");
+        System.out.println(search1.search("ee"));
+        search1.printSearchablesInNewLine(search1.search("java"));
+        System.out.println("--------------- Реализация метода deletedByName ---------------");
+        System.out.println(basket.deletedByName("beer "));
+        System.out.println("----------------- Печать корзины после удаления ----------------");
+        basket.printBasket();
+        System.out.println("----------------- Поиск продукта которого нет ----------------");
+        List<Product> deletedProducts = basket.deletedByName("продукт которого нет");
+        if (deletedProducts.isEmpty()) {
+            System.out.println("Список пуст");
+        } else {
+            System.out.println(deletedProducts);
+        }
 
     }
 }
