@@ -1,56 +1,50 @@
 package org.skypro.skyshop.search;
 
-
-import java.util.Arrays;
+import java.util.*;
 
 public class SearchEngine {
 
-    private static final int MAX_RESULTS = 5;
-    private final Searchable[] searchables;
-    private int size;
+    private final List<Searchable> searchables;
 
 
-    public SearchEngine(int capacity) {
-        if (capacity < 0) {
-            throw new IllegalArgumentException("Capacity cannot be negative");
-        }
-        this.searchables = new Searchable[capacity];
-        this.size = 0;
+    public SearchEngine() {
+
+        this.searchables = new LinkedList<>();
     }
 
-    public Searchable[] search(String query) {
-        Searchable[] results = new Searchable[MAX_RESULTS];
-        int count = 0;
-        for (int i = 0; i < size && count < results.length; i++) {
-            Searchable item = searchables[i];
-            if (item != null && item.searchTerm().toLowerCase().contains(query.toLowerCase())) {
-                results[count++] = item;
+    public List<Searchable> search(String query) {
+        if (query == null) {
+            throw new IllegalArgumentException("Query can't be null");
+        }
+        List<Searchable> results = new ArrayList<>();
+        if (query.isBlank()) {
+            return Collections.emptyList();
+        }
+        for (Searchable searchable : searchables) {
+            if (searchable.searchTerm().toLowerCase().contains(query.toLowerCase())) {
+                results.add(searchable);
             }
         }
         return results;
     }
 
+    public void printSearchablesInNewLine(List<Searchable> searchables) {
+        if (searchables.isEmpty()) {
+            System.out.println("Cписок пуст");
+            return;
+        }
+        for (Searchable searchable : searchables) {
+            System.out.println(searchable);
+        }
+    }
+
     public void add(Searchable item) {
-        if (size >= searchables.length) {
-            throw new IllegalStateException("SearchEngine is full");
+        if (item == null) {
+            throw new IllegalArgumentException("Item can't be null");
         }
-        searchables[size++] = item;
+        searchables.add(item);
     }
 
-    public static void printResults(Searchable[] results) {
-        boolean found = false;
-
-        for (int i = 0; i < results.length; i++) {
-            if (results[i] != null) {
-                System.out.println((i + 1) + ". " + results[i].getStringRepresentation());
-                found = true;
-            }
-        }
-
-        if (!found) {
-            System.out.println("Ничего не найдено");
-        }
-    }
 
     public Searchable bestFoundMatch(String search) throws BestResultNotFound {
         int maxCount = 0;
@@ -68,13 +62,11 @@ public class SearchEngine {
                     index = term.indexOf(search, index + search.length());
                 }
 
-
                 if (currentCount > maxCount) {
                     maxCount = currentCount;
                     bestMatch = searchable;
                 }
             }
-
 
         }
         if (bestMatch == null) {
@@ -87,8 +79,7 @@ public class SearchEngine {
     @Override
     public String toString() {
         return "SearchEngine{" +
-                "searchables=" + Arrays.toString(searchables) +
-                ", size=" + size +
+                "searchables=" + searchables +
                 '}';
     }
 }
