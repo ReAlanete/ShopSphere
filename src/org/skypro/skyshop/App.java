@@ -128,7 +128,7 @@ public class App {
         basket.printBasket();
         System.out.println("----------------- Реализация метода search ----------------");
         System.out.println(search1.search("ee"));
-        search1.printSearchablesInNewLine(search1.search("java"));
+        search1.printSearchablesInNewLine(search1.search("php"));
         System.out.println("--------------- Реализация метода deletedByName ---------------");
         System.out.println(basket.deletedByName("beer "));
         System.out.println("----------------- Печать корзины после удаления ----------------");

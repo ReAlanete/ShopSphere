@@ -12,28 +12,28 @@ public class SearchEngine {
         this.searchables = new LinkedList<>();
     }
 
-    public List<Searchable> search(String query) {
+    public Map<String,Searchable> search(String query) {
         if (query == null) {
             throw new IllegalArgumentException("Query can't be null");
         }
-        List<Searchable> results = new ArrayList<>();
+        Map<String,Searchable> results = new TreeMap<>();
         if (query.isBlank()) {
-            return Collections.emptyList();
+            return results;
         }
         for (Searchable searchable : searchables) {
             if (searchable.searchTerm().toLowerCase().contains(query.toLowerCase())) {
-                results.add(searchable);
+                results.put(searchable.getName(),searchable);
             }
         }
         return results;
     }
 
-    public void printSearchablesInNewLine(List<Searchable> searchables) {
-        if (searchables.isEmpty()) {
+    public void printSearchablesInNewLine(Map<String,Searchable> results) {
+        if (results.isEmpty()) {
             System.out.println("Cписок пуст");
             return;
         }
-        for (Searchable searchable : searchables) {
+        for (Searchable searchable : results.values()) {
             System.out.println(searchable);
         }
     }

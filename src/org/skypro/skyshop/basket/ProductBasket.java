@@ -7,38 +7,42 @@ import java.util.*;
 
 
 public class ProductBasket {
-    private final List<Product> products;
+    private final Map<String, List<Product>> products;
 
     public ProductBasket() {
-        this.products = new ArrayList<>();
+        this.products = new HashMap<>();
     }
 
     public void addProduct(Product product) {
         if (product == null) {
             throw new IllegalArgumentException("Product cannot be null");
         }
-        products.add(product);
+        products.computeIfAbsent(product.getName(), k -> new ArrayList<>()).add(product);
     }
 
     public int totalCostBasket() {
         int total = 0;
-        for (Product product : products) {
-            total += (int) product.getPrice();
+        for (List<Product> productList : products.values()) {
 
+            for (Product product : productList) {
+                total += (int) product.getPrice();
+            }
         }
         return total;
     }
-
     public void printBasket() {
         if (products.isEmpty()) {
             System.out.println("В корзине пусто");
             return;
         }
         int specialCount = 0;
-        for (Product product : products) {
-            System.out.println(product);
-            if (product.isSpecial()) {
-                specialCount++;
+        for (List<Product> productList : products.values()) {
+            for (Product product : productList) {
+
+                System.out.println(product);
+                if (product.isSpecial()) {
+                    specialCount++;
+                }
             }
         }
         System.out.println("Total cost basket: " + totalCostBasket());
@@ -49,9 +53,12 @@ public class ProductBasket {
         if (name == null || name.isBlank()) {
             return false;
         }
-        for (Product product : products) {
-            if (name.equalsIgnoreCase(product.getName())) {
-                return true;
+        for (List<Product> productList : products.values()) {
+
+            for (Product product : productList) {
+                if (name.equalsIgnoreCase(product.getName())) {
+                    return true;
+                }
             }
         }
         return false;
@@ -65,13 +72,17 @@ public class ProductBasket {
         if (name == null || name.isBlank()) {
             return Collections.emptyList();
         }
-        Iterator<Product> iterator = products.iterator();
         List<Product> deletedProducts = new ArrayList<>();
-        while (iterator.hasNext()) {
-            Product product = iterator.next();
-            if (product.getName().trim().equalsIgnoreCase(name.trim())) {
-                deletedProducts.add(product);
-                iterator.remove();
+        for (List<Product> productList : products.values()) {
+
+            Iterator<Product> iterator = productList.iterator();
+
+            while (iterator.hasNext()) {
+                Product product = iterator.next();
+                if (product.getName().trim().equalsIgnoreCase(name.trim())) {
+                    deletedProducts.add(product);
+                    iterator.remove();
+                }
             }
         }
         return deletedProducts;
