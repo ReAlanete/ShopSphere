@@ -69,23 +69,7 @@ public class ProductBasket {
     }
 
     public List<Product> deletedByName(String name) {
-        if (name == null || name.isBlank()) {
-            return Collections.emptyList();
-        }
-        List<Product> deletedProducts = new ArrayList<>();
-        for (List<Product> productList : products.values()) {
-
-            Iterator<Product> iterator = productList.iterator();
-
-            while (iterator.hasNext()) {
-                Product product = iterator.next();
-                if (product.getName().trim().equalsIgnoreCase(name.trim())) {
-                    deletedProducts.add(product);
-                    iterator.remove();
-                }
-            }
-        }
-        return deletedProducts;
+        return products.remove(name);
     }
 
     @Override

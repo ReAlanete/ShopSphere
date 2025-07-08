@@ -135,7 +135,7 @@ public class App {
         basket.printBasket();
         System.out.println("----------------- Поиск продукта которого нет ----------------");
         List<Product> deletedProducts = basket.deletedByName("продукт которого нет");
-        if (deletedProducts.isEmpty()) {
+        if (deletedProducts == null) {
             System.out.println("Список пуст");
         } else {
             System.out.println(deletedProducts);
