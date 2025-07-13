@@ -4,38 +4,48 @@ import java.util.*;
 
 public class SearchEngine {
 
-    private final List<Searchable> searchables;
+    private final Set<Searchable> searchables;
 
 
     public SearchEngine() {
 
-        this.searchables = new LinkedList<>();
+        this.searchables = new HashSet<>();
     }
 
-    public Map<String,Searchable> search(String query) {
+    public Set<Searchable> search(String query) {
         if (query == null) {
             throw new IllegalArgumentException("Query can't be null");
         }
-        Map<String,Searchable> results = new TreeMap<>();
+        Set<Searchable> results = new TreeSet<>(new SearchableComparator());
         if (query.isBlank()) {
             return results;
         }
         for (Searchable searchable : searchables) {
-            if (searchable.searchTerm().toLowerCase().contains(query.toLowerCase())) {
-                results.put(searchable.getName(),searchable);
+            String term = searchable.searchTerm();
+            if (term != null && term.toLowerCase().contains(query.toLowerCase())) {
+                results.add(searchable);
             }
         }
         return results;
     }
 
-    public void printSearchablesInNewLine(Map<String,Searchable> results) {
-        if (results.isEmpty()) {
-            System.out.println("Cписок пуст");
+    public void printSearchablesInNewLine(Set<Searchable> results) {
+        if (results == null) {
+            System.out.println("Error: Search results are null");
             return;
         }
-        for (Searchable searchable : results.values()) {
-            System.out.println(searchable);
+
+        if (results.isEmpty()) {
+            System.out.println("No results found");
+            return;
         }
+
+        int counter = 1;
+        for (Searchable searchable : results) {
+            System.out.println(counter++ + ". " + searchable);
+        }
+
+        System.out.println("Total found: " + results.size());
     }
 
     public void add(Searchable item) {
