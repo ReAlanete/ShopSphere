@@ -67,6 +67,11 @@ public class App {
                 "Оба языка имеют большое сообщество разработчиков. " +
                         "Java широко используется в корпоративных решениях, а PHP — в веб-разработке с множеством" +
                         " фреймворков и CMS."
+        );   Article article6 = new Article(
+                "Java vs PHP: Сообщество и поддержка",
+                "Оба языка имеют большое сообщество разработчиков. " +
+                        "Java широко используется в корпоративных решениях, а PHP — в веб-разработке с множеством" +
+                        " фреймворков и CMS."
         );
 
 
@@ -75,6 +80,7 @@ public class App {
 
         search1.add(ball);
         search1.add(article5);
+        search1.add(article6);
         search1.add(article4);
         search1.add(article3);
         search1.add(article2);
