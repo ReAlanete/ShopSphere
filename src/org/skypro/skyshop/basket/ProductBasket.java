@@ -21,47 +21,39 @@ public class ProductBasket {
     }
 
     public int totalCostBasket() {
-        int total = 0;
-        for (List<Product> productList : products.values()) {
 
-            for (Product product : productList) {
-                total += (int) product.getPrice();
-            }
-        }
-        return total;
+
+        return products.values().stream().flatMap(Collection::stream).
+                mapToInt(product -> (int) product.getPrice()).
+                sum();
     }
+    private int getSpecialCount() {
+        return (int) products.values().stream().
+                flatMap(Collection::stream)
+                .filter(Product::isSpecial)
+                .count();
+    }
+
     public void printBasket() {
         if (products.isEmpty()) {
             System.out.println("В корзине пусто");
             return;
         }
-        int specialCount = 0;
-        for (List<Product> productList : products.values()) {
-            for (Product product : productList) {
+        products.values().stream()
+                        .flatMap(Collection::stream)
+                                .forEach(System.out::println);
 
-                System.out.println(product);
-                if (product.isSpecial()) {
-                    specialCount++;
-                }
-            }
-        }
         System.out.println("Total cost basket: " + totalCostBasket());
-        System.out.println("Специальных товаров: " + specialCount);
+        System.out.println("Специальных товаров: " + getSpecialCount());
     }
 
     public boolean checkProductInBasket(String name) {
         if (name == null || name.isBlank()) {
             return false;
         }
-        for (List<Product> productList : products.values()) {
-
-            for (Product product : productList) {
-                if (name.equalsIgnoreCase(product.getName())) {
-                    return true;
-                }
-            }
-        }
-        return false;
+        return products.values().stream()
+                .flatMap(Collection::stream)
+                .anyMatch(product -> name.equalsIgnoreCase(product.getName()));
     }
 
     public void cleanBasket() {
